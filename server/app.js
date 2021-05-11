@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('./db');
+const db = require('../db');
 const morgan = require('morgan');
 const router = require('./routes.js');
 
