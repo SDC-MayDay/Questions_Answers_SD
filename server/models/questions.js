@@ -16,12 +16,16 @@ module.exports = {
 
       allQuestions['product_name'] = questionResults[0].name;
       for (let i = 0; i < questionResults.length; i++) {
+        let reported = false;
+        if (questionResults[i].reported === 1) {
+          reported = true;
+        }
         allQuestions['questions'].push({
           question_id: questionResults[i].id,
           question_body: questionResults[i].body,
           question_date: questionResults[i].date_written,
           asker_name: questionResults[i].asker_name,
-          question_reported: questionResults[i].reported,
+          question_reported: reported,
           question_helpful: questionResults[i].helpful,
           answers: {}
         });
@@ -31,13 +35,13 @@ module.exports = {
         INNER JOIN questions AS q ON (q.id = a.question_id) WHERE q.id=${questionResults[i].id}`
 
         db.query(queryAnswers, (err, answerResults) => {
-          //console.log(answerResults);
           let answerLength = Object.keys(answerResults).length;
           if (answerLength > 0) {
             for (let j = 0; j < answerLength; j++) {
               if (allQuestions['questions'][i]['answers'][answerResults[j].id] === undefined) {
                 allQuestions['questions'][i]['answers'][answerResults[j].id] = {};
               }
+
               allQuestions['questions'][i]['answers'][answerResults[j].id] = {
                 id: answerResults[j].id,
                 body: answerResults[j].body,
@@ -47,12 +51,22 @@ module.exports = {
                 helpful: answerResults[j].helpful,
                 photos: []
               }
-             // console.log(allQuestions['questions'][i]['answers'][answerResults[j].id]);
+
+              let queryPhotos = `SELECT p.id, p.url FROM photos AS p INNER JOIN answers AS a ON (a.id = p.answer_id) WHERE p.answer_id=${answerResults[j].id}`;
+              db.query(queryPhotos, (err, photoResults) => {
+                if (photoResults.length > 0) {
+                  for (let k = 0; k < photoResults.length; k++) {
+                    allQuestions['questions'][i]['answers'][answerResults[j].id]['photos'].push({
+                      id: photoResults[k].id, url: photoResults[k].url
+                    });
+                  }
+                }
+                callback(null, allQuestions);
+              })
             }
           }
         });
       }
-      callback(null, allQuestions);
     });
   },
 

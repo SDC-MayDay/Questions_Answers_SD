@@ -3,11 +3,11 @@ var models = require('../models');
 module.exports = {
   get: (req, res) => {
     const { questionId } = req.params;
-    models.answers.getAll(questionId, function(err, results) {
+    models.answers.getAll(questionId, (err, results) => {
       if (err) {
-        res.status(400).send(err);
+        return res.status(400).send(err);
       } else {
-        res.status(200).send(results);
+        return res.status(200).send(results);
       }
     });
   },
@@ -30,7 +30,7 @@ module.exports = {
       if (err) {
         res.status(400).send(err);
       } else {
-         res.status(204).send('Answer Helpfulness Updated!');
+        res.status(204).send('Answer Helpfulness Updated!');
       }
     });
   },
