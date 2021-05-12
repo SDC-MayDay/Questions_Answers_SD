@@ -2,11 +2,12 @@ var models = require('../models');
 
 module.exports = {
   get: function (req, res) {
-    models.answers.getAll(function(err, results) {
+    const { question_id } = req.params;
+    models.answers.getAll(question_id, function(err, results) {
       if (err) {
-        console.log(err);
+        res.status(400).send(err);
       } else {
-        res.json(results);
+        res.status(200).send(results);
       }
     });
   }
