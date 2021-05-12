@@ -22,17 +22,40 @@ module.exports = {
             photos: []
           })
 
-          var queryPhotos = `SELECT p.url FROM photos AS p INNER JOIN answers AS a ON (a.id = p.answer_id) WHERE a.id = p.answer_id`;
+          var queryPhotos = `SELECT p.id, p.url FROM photos AS p INNER JOIN answers AS a ON (a.id = p.answer_id) WHERE p.answer_id=${answerResults[i].id}`;
           db.query(queryPhotos, (err, photoResults) => {
-            for (let j = 0; j < photoResults; j++) {
-              allAnswers['answers'][i]['photos'].push({
-                id: photoResults[j].id,
-                url: photoResults[j].url
-              })
+            if (photoResults.length > 0) {
+              for (let j = 0; j < photoResults.length; j++) {
+                //console.log(allAnswers['answers'][i]);
+                allAnswers['answers'][i]['photos'].push({
+                  id: photoResults[j].id,
+                  url: photoResults[j].url
+                })
+              }
             }
           })
         }
         callback(err, allAnswers);
     });
-  }
+  },
+
+  postAnswer: (answer, callback) => {
+    const queryString = `INSERT INTO Answers (question_id, body, date_written, answerer_name, answerer_email, reported, helpful) VALUES (${answer.question_id}, "${answer.body}", curdate(), "${answer.name}", "${answer.email}", 0, 0)`;
+
+    db.query(queryString, (err, results) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null);
+      }
+    });
+  },
+
+  // incrementHelpful: () => {
+
+  // },
+
+  // incrementReport: () => {
+
+  // }
 };

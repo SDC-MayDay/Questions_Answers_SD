@@ -18,8 +18,29 @@ module.exports = {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(201).send('Question added');
+        res.status(201).send('Question created successfully!');
       }
     });
-  }
+  },
+
+  // putHelpful: (req, res) => {
+
+  //   models.questions.incrementHelpful() => {
+  //     if (err) {
+
+  //     } else {
+  //        res.status(204).send('Incremented Question Helpfulness!');
+  //     }
+  //   }
+  // },
+
+  // putReport: (req, res) => {
+  //   models.questions.incrementReport() => {
+  //     if (err) {
+
+  //     } else {
+  //       res.status(204).send('Incremented Question Report!');
+  //     }
+  //   }
+  // }
 }

@@ -31,21 +31,23 @@ module.exports = {
         INNER JOIN questions AS q ON (q.id = a.question_id) WHERE q.id=${questionResults[i].id}`
 
         db.query(queryAnswers, (err, answerResults) => {
-          console.log(answerResults);
+          //console.log(answerResults);
           let answerLength = Object.keys(answerResults).length;
           if (answerLength > 0) {
-            for (let j = 0; j < answerResults.length; j++) {
-              if (allQuestions['questions']['answers'][answerResults[j].id] === undefined) {
-                allQuestions['questions']['answers'][answerResults[j].id] = {
-                  id: answerResults[j].id,
-                  body: answerResults[j].body,
-                  date: answerResults[j].date_written,
-                  answerer_name: answerResults[j].answerer_name,
-                  reported: answerResults[j].reported,
-                  helpful: answerResults[j].helpful,
-                  photos: []
-                }
-             }
+            for (let j = 0; j < answerLength; j++) {
+              if (allQuestions['questions'][i]['answers'][answerResults[j].id] === undefined) {
+                allQuestions['questions'][i]['answers'][answerResults[j].id] = {};
+              }
+              allQuestions['questions'][i]['answers'][answerResults[j].id] = {
+                id: answerResults[j].id,
+                body: answerResults[j].body,
+                date: answerResults[j].date_written,
+                answerer_name: answerResults[j].answerer_name,
+                reported: answerResults[j].reported,
+                helpful: answerResults[j].helpful,
+                photos: []
+              }
+             // console.log(allQuestions['questions'][i]['answers'][answerResults[j].id]);
             }
           }
         });
@@ -55,7 +57,7 @@ module.exports = {
   },
 
   postQuestion: (question, callback) => {
-    const queryString = `INSERT INTO questions (product_id, body, date_written, asker_name, asker_email, reported, helpful) VALUES (${question.product_id}, ${question.body}, NOW(), ${question.name}, ${question.email}, 0, 0)`;
+    const queryString = `INSERT INTO questions (product_id, body, date_written, asker_name, asker_email, reported, helpful) VALUES (${question.product_id}, "${question.body}", curdate(), "${question.name}", "${question.email}", 0, 0)`;
 
     db.query(queryString, (err, results) => {
       if (err) {
@@ -64,8 +66,13 @@ module.exports = {
         callback(null);
       }
     });
-  }
-};
+  },
 
-// a.body, a.date_written, a.answerer_name, a.reported, a.helpful
-// INNER JOIN answers AS a ON (q.id = a.question_id)
+  // incrementHelpful: () => {
+
+  // },
+
+  // incrementReport: () => {
+
+  // }
+};
