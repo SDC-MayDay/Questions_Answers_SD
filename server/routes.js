@@ -8,8 +8,8 @@ router.post('/questions', controller.questions.post);
 router.post('/questions/:questionId/answers', controller.answers.post);
 
 router.put('/questions/:questionId/helpful', controller.questions.updateHelpful);
-// router.put('/questions/:question_id/report', controller.questions.putReport);
 router.put('/answers/:answerId/helpful', controller.answers.updateHelpful);
-// router.put('/answers/:answer_id/report', controller.answers.putReport);
+router.put('/questions/:questionId/report', controller.questions.updateReport);
+router.put('/answers/:answerId/report', controller.answers.updateReport);
 
 module.exports = router;

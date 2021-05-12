@@ -34,13 +34,14 @@ module.exports = {
     });
   },
 
-  // putReport: (req, res) => {
-  //   models.questions.incrementReport() => {
-  //     if (err) {
-
-  //     } else {
-  //       res.status(204).send('Incremented Question Report!');
-  //     }
-  //   }
-  // }
+  updateReport: (req, res) => {
+    const { questionId } = req.params;
+    models.questions.changeReport(questionId, (err) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(204).send('Question Reported!');
+      }
+    });
+  }
 }
