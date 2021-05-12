@@ -115,7 +115,7 @@ CREATE TABLE `Photos` (
 --
 -- ---
 
-LOAD DATA LOCAL INFILE './csv/product_clean.csv' INTO TABLE Products
+LOAD DATA LOCAL INFILE '/Users/shannon.toft/Documents/Hack_Reactor/SDC-Capstone/csv/product_clean.csv' INTO TABLE Products
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -131,7 +131,7 @@ SET id=id, name=name;
 --
 -- ---
 
-LOAD DATA LOCAL INFILE './csv/questions_clean.csv' INTO TABLE Questions
+LOAD DATA LOCAL INFILE '/Users/shannon.toft/Documents/Hack_Reactor/SDC-Capstone/csv/questions_clean.csv' INTO TABLE Questions
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -148,7 +148,7 @@ ALTER TABLE `Questions` ADD FOREIGN KEY (product_id) REFERENCES `Products` (`id`
 --
 -- ---
 
-LOAD DATA LOCAL INFILE './csv/answers_clean.csv' INTO TABLE Answers
+LOAD DATA LOCAL INFILE '/Users/shannon.toft/Documents/Hack_Reactor/SDC-Capstone/csv/answers_clean.csv' INTO TABLE Answers
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -165,7 +165,7 @@ ALTER TABLE `Answers` ADD FOREIGN KEY (question_id) REFERENCES `Questions` (`id`
 --
 -- ---
 
-LOAD DATA LOCAL INFILE './csv/answers_photos_clean.csv' INTO TABLE Photos
+LOAD DATA LOCAL INFILE '/Users/shannon.toft/Documents/Hack_Reactor/SDC-Capstone/csv/answers_photos_clean.csv' INTO TABLE Photos
 FIELDS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
@@ -176,3 +176,16 @@ SET id=id, answer_id=answer_id, url=url;
 
 -- DELETE FROM photos WHERE NOT EXISTS (SELECT * FROM answers AS t1 WHERE t1.id = photos.answer_id);
 ALTER TABLE `Photos` ADD FOREIGN KEY (answer_id) REFERENCES `Answers` (`id`);
+
+
+-- CHANGE COLUMN NAMES
+
+-- ALTER TABLE questions RENAME COLUMN body TO question_body;
+-- ALTER TABLE questions RENAME COLUMN date_written TO question_date;
+-- ALTER TABLE questions RENAME COLUMN reported TO question_reported;
+-- ALTER TABLE questions RENAME COLUMN helpful TO question_helpful;
+
+-- ALTER TABLE answers RENAME COLUMN body TO answer_body;
+-- ALTER TABLE answers RENAME COLUMN date_written TO answer_date;
+-- ALTER TABLE answers RENAME COLUMN reported TO answer_reported;
+-- ALTER TABLE answers RENAME COLUMN body TO answer_helpful;
