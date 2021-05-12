@@ -51,9 +51,16 @@ module.exports = {
     });
   },
 
-  // incrementHelpful: () => {
-
-  // },
+  incrementHelpful: (answerId, callback) => {
+    const queryString = `UPDATE answers SET helpful = helpful+1 WHERE id=${answerId}`;
+    db.query(queryString, (err) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null);
+      }
+    });
+  },
 
   // incrementReport: () => {
 

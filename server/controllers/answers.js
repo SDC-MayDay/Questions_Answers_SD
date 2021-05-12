@@ -24,15 +24,16 @@ module.exports = {
     });
   },
 
-  // putHelpful: (req, res) => {
-  //   models.answers.incrementHelpful() => {
-  //     if (err) {
-
-  //     } else {
-  //        res.status(204).send('Incremented Answer Helpfulness!');
-  //     }
-  //   }
-  // },
+  updateHelpful: (req, res) => {
+    const { answerId } = req.params;
+    models.answers.incrementHelpful(answerId, (err) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+         res.status(204).send('Answer Helpfulness Updated!');
+      }
+    });
+  },
 
   // putReport: (req, res) => {
   //   models.answers.incrementReport() => {
