@@ -3,7 +3,7 @@ var models = require('../models');
 module.exports = {
   get: (req, res) => {
     const { productId } = req.params;
-    models.questions.getAll(productId, function(err, results) {
+    models.questions.getAll(productId, (err, results) => {
       if (err) {
         res.status(400).send(err);
       } else {
@@ -29,7 +29,7 @@ module.exports = {
       if (err) {
         res.status(400).send(err);
       } else {
-         res.status(204).send('Question Helpfulness Updated!');
+        res.status(204).send('Question Helpfulness Updated!');
       }
     });
   },
