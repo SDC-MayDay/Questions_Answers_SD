@@ -11,6 +11,10 @@ module.exports = {
       FROM answers AS a \
       INNER JOIN questions AS q ON (q.id = a.question_id) where a.question_id=${questionId}`;
       db.query(queryAnswers, (err, answerResults) => {
+        if (err) {
+          return callback(err);
+        }
+
         for (let i = 0; i < answerResults.length; i++) {
           let reported = false;
           if (answerResults[i].reported === 1) {
@@ -30,15 +34,19 @@ module.exports = {
           let photoList = {id: null, url: null};
           let queryPhotos = `SELECT p.id, p.url FROM photos AS p INNER JOIN answers AS a ON (a.id = p.answer_id) WHERE p.answer_id=${answerResults[i].id}`;
           db.query(queryPhotos, (err, photoResults) => {
+            if (err) {
+              return callback(err);
+            }
+
             if (photoResults.length > 0) {
               for (let j = 0; j < photoResults.length; j++) {
                 photoList = {id: photoResults[j].id, url: photoResults[j].url};
                 allAnswers['answers'][i]['photos'].push(photoList);
               }
             }
-            callback(null, allAnswers);
-          })
+          });
         }
+        callback(null, allAnswers);
       });
   },
 
