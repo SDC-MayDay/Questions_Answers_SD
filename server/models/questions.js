@@ -13,6 +13,9 @@ module.exports = {
     INNER JOIN products AS p ON (q.product_id = p.id) WHERE p.id=${productId}`;
 
     db.query(queryQuestions, (err, questionResults) => {
+      if (err) {
+        return callback(err);
+      }
 
       allQuestions['product_name'] = questionResults[0].name;
       for (let i = 0; i < questionResults.length; i++) {
@@ -35,6 +38,10 @@ module.exports = {
         INNER JOIN questions AS q ON (q.id = a.question_id) WHERE q.id=${questionResults[i].id}`
 
         db.query(queryAnswers, (err, answerResults) => {
+          if (err) {
+            return callback(err);
+          }
+
           let answerLength = Object.keys(answerResults).length;
           if (answerLength > 0) {
             for (let j = 0; j < answerLength; j++) {
@@ -54,6 +61,10 @@ module.exports = {
 
               let queryPhotos = `SELECT p.id, p.url FROM photos AS p INNER JOIN answers AS a ON (a.id = p.answer_id) WHERE p.answer_id=${answerResults[j].id}`;
               db.query(queryPhotos, (err, photoResults) => {
+                if (err) {
+                  return callback(err);
+                }
+
                 if (photoResults.length > 0) {
                   for (let k = 0; k < photoResults.length; k++) {
                     allQuestions['questions'][i]['answers'][answerResults[j].id]['photos'].push({
@@ -61,12 +72,12 @@ module.exports = {
                     });
                   }
                 }
-                callback(null, allQuestions);
               })
             }
           }
         });
       }
+      callback(null, allQuestions);
     });
   },
 
