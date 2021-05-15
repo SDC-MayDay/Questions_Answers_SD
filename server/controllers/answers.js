@@ -5,9 +5,9 @@ module.exports = {
     const { questionId } = req.params;
     models.answers.getAll(questionId, (err, results) => {
       if (err) {
-        return res.status(400).send(err);
+        res.status(400).send(err);
       } else {
-        return res.status(200).send(results);
+        res.status(200).send(results);
       }
     });
   },
